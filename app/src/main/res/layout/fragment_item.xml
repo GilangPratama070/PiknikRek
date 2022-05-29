@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.onboard.ItemFragment">
+
+    <ImageView
+        android:id="@+id/iv_onboard"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/onboard_1"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/iv_logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="56dp"
+        android:drawablePadding="8dp"
+        android:text="@string/piknik_rek"
+        android:textColor="@color/color_logo"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:drawableTint="@color/color_logo"
+        app:drawableTopCompat="@drawable/ic_logo"
+        app:layout_constraintEnd_toEndOf="@id/iv_onboard"
+        app:layout_constraintStart_toStartOf="@id/iv_onboard"
+        app:layout_constraintTop_toTopOf="@id/iv_onboard" />
+
+    <TextView
+        android:id="@+id/tv_onboard_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Selamat Datang"
+        android:textColor="@color/white"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/tv_onboard_detail"
+        app:layout_constraintEnd_toEndOf="@id/iv_onboard"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="@id/iv_onboard" />
+
+    <TextView
+        android:id="@+id/tv_for_sec_third"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginBottom="64dp"
+        android:maxWidth="240dp"
+        android:textColor="@color/white"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/iv_onboard"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_onboard_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:lineSpacingExtra="4dp"
+        android:maxWidth="300dp"
+        android:text="Lorem idyjggjgghhjgjgj gggghhghggjgjghn jjdjdgjdgjddgjgdjgdjdhgjdgd jgdjdgwhhwgi"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@id/btn_lewati"
+        app:layout_constraintEnd_toEndOf="@id/iv_onboard"
+        app:layout_constraintStart_toStartOf="@id/iv_onboard" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_lewati"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginBottom="64dp"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:text="Lewati"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        android:background="@drawable/bg_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+    <TextView
+        android:id="@+id/tv_onboard_4th"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Tunggu apa lagi?"
+        android:visibility="gone"
+        android:textColor="@color/white"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/tv_onboard_detail_4th"
+        app:layout_constraintEnd_toEndOf="@id/iv_onboard"
+        app:layout_constraintStart_toStartOf="@id/iv_onboard" />
+
+    <TextView
+        android:id="@+id/tv_onboard_detail_4th"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="32dp"
+        android:lineSpacingExtra="4dp"
+        android:maxWidth="300dp"
+        android:visibility="gone"
+        android:text="Lorem idyjggjgghhjgjgj gggghhghggjgjghn jjdjdgjdgjddgjgdjgdjdhgjdgd jgdjdgwhhwgi"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toTopOf="@id/btn_mulai"
+        app:layout_constraintEnd_toEndOf="@id/iv_onboard"
+        app:layout_constraintStart_toStartOf="@id/iv_onboard" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_mulai"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginBottom="64dp"
+        android:visibility="gone"
+        android:textColor="@color/white"
+        android:textSize="16sp"
+        android:text="Mulai Sekarang"
+        android:textStyle="bold"
+        android:textAllCaps="false"
+        android:background="@drawable/bg_button"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
