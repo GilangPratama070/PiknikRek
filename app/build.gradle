@@ -80,4 +80,9 @@ dependencies {
     //lottie
     def lottieVersion = "3.7.0"
     implementation "com.airbnb.android:lottie:$lottieVersion"
+
+    implementation 'com.github.f0ris.sweetalert:library:1.6.2'
+
+    //TFlite
+    implementation 'org.tensorflow:tensorflow-lite-task-vision:0.3.1'
 }

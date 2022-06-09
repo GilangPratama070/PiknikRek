@@ -3,6 +3,7 @@ package com.gilangpratama.piknikrek.data.remote.api
 import com.gilangpratama.piknikrek.data.remote.response.detail.DetailResponse
 import com.gilangpratama.piknikrek.data.remote.response.wisata.WisataResponse
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
@@ -13,8 +14,8 @@ interface ApiService {
         @Query("long") long: Int = 1
     ): WisataResponse
 
-    @GET("detail-wisata")
+    @GET("detail-wisata/{id}")
     suspend fun getDetailWisata(
-        @Query("id") id: Int
-    ): DetailResponse
+        @Path("id") id: Int
+    ): WisataResponse
 }

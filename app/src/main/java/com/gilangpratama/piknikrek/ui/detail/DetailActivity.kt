@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.navArgs
 import com.gilangpratama.piknikrek.R
 import com.gilangpratama.piknikrek.data.local.DetailEntity
+import com.gilangpratama.piknikrek.data.local.WisataEntity
 import com.gilangpratama.piknikrek.data.remote.Result
 import com.gilangpratama.piknikrek.databinding.ActivityDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -35,11 +36,11 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private val detailObserver = Observer<Result<DetailEntity?>> { result ->
+    private val detailObserver = Observer<Result<List<WisataEntity?>>> { result ->
         when (result) {
             is Result.Loading -> {}
             is Result.Success -> {
-                populateDetail(result.data)
+                populateDetail(result.data?.get(0))
             }
             is Result.Error -> {
                 Toast.makeText(this, result.message, Toast.LENGTH_SHORT).show()
@@ -47,7 +48,7 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun populateDetail(data: DetailEntity?) {
+    private fun populateDetail(data: WisataEntity?) {
         binding.apply {
             tvName.text = data?.name
             tvAlamat.text = data?.address

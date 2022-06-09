@@ -9,5 +9,5 @@ import com.gilangpratama.piknikrek.data.remote.response.wisata.Wisata
 interface WisataRepository {
     fun getListWisata(): LiveData<Result<List<WisataEntity?>>>
 
-    fun getDetailWisata(id: Int): LiveData<Result<DetailEntity?>>
+    fun getDetailWisata(id: Int): LiveData<Result<List<WisataEntity?>>>
 }

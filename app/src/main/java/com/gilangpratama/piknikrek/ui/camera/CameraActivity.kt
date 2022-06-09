@@ -1,26 +1,43 @@
 package com.gilangpratama.piknikrek.ui.camera
 
 import android.Manifest
+import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageCapture
+import androidx.camera.core.ImageCaptureException
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.lifecycleScope
+import cn.pedant.SweetAlert.SweetAlertDialog
+import com.gilangpratama.piknikrek.R
 import com.gilangpratama.piknikrek.databinding.ActivityCameraBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import org.tensorflow.lite.support.image.TensorImage
+import org.tensorflow.lite.task.vision.detector.ObjectDetector
+import java.io.File
+import kotlin.random.Random
 
 @AndroidEntryPoint
 class CameraActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityCameraBinding
+    private lateinit var outputDirectory: File
     private var imageCapture: ImageCapture? = null
     private var cameraSelector: CameraSelector = CameraSelector.DEFAULT_BACK_CAMERA
 
@@ -36,17 +53,23 @@ class CameraActivity : AppCompatActivity() {
                 REQUEST_CODE_PERMISSIONS
             )
         }
+        outputDirectory = getOutputDir()
+        setUpView()
+    }
 
-        binding.switchCamera.setOnClickListener {
-            cameraSelector = if (cameraSelector.equals(CameraSelector.DEFAULT_BACK_CAMERA)) CameraSelector.DEFAULT_FRONT_CAMERA
-            else CameraSelector.DEFAULT_BACK_CAMERA
+    private fun setUpView() {
+        binding.apply {
+            switchCamera.setOnClickListener {
+                cameraSelector = if (cameraSelector.equals(CameraSelector.DEFAULT_BACK_CAMERA)) CameraSelector.DEFAULT_FRONT_CAMERA
+                else CameraSelector.DEFAULT_BACK_CAMERA
 
-            startCamera()
-        }
+                startCamera()
+            }
 
-        binding.captureImage.setOnClickListener { takePhoto() }
-        binding.btnBack.setOnClickListener {
-            onBackPressed()
+            captureImage.setOnClickListener { takePhoto() }
+            btnBack.setOnClickListener {
+                onBackPressed()
+            }
         }
     }
 
@@ -57,7 +80,111 @@ class CameraActivity : AppCompatActivity() {
     }
 
     private fun takePhoto() {
-        // takePhoto
+        val imageCapture = imageCapture ?: return
+        val data = Random.nextInt(100)
+        val filename = 5.getRandomString()
+        val photoFile = File(
+            outputDirectory , "$filename$data.jpg"
+        )
+        val outputOptions = ImageCapture.OutputFileOptions.Builder(photoFile).build()
+        imageCapture.takePicture(
+            outputOptions,
+            ContextCompat.getMainExecutor(this),
+            object : ImageCapture.OnImageSavedCallback {
+                override fun onError(exc: ImageCaptureException) {
+                    Toast.makeText(
+                        this@CameraActivity,
+                        "Gagal mengambil gambar.",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                override fun onImageSaved(output: ImageCapture.OutputFileResults) {
+                    setUpDialog(Uri.fromFile(photoFile))
+                    val options = BitmapFactory.Options()
+                    val image = BitmapFactory.decodeFile(photoFile.absolutePath, options)
+                    val imageBitmap = Bitmap.createBitmap(image)
+                    lifecycleScope.launch(Dispatchers.Default) { runObjectDetection(imageBitmap) }
+                    //setUpTestDialog(imageBitmap)
+                }
+            }
+        )
+    }
+
+    private fun runObjectDetection(bitmap: Bitmap?) {
+        val image = TensorImage.fromBitmap(bitmap)
+        val options = ObjectDetector.ObjectDetectorOptions.builder()
+            .setMaxResults(5)
+            .setScoreThreshold(0.3f)
+            .build()
+        val detector = ObjectDetector.createFromFileAndOptions(this, "model.tflite", options)
+        val result = detector.detect(image)
+        val resultToDisplay = result.map {
+            val category = it.categories.first()
+            val text = category.label
+            DetectionResult(text)
+        }
+
+        runOnUiThread {
+            Toast.makeText(this, "$resultToDisplay", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    @SuppressLint("NewApi")
+    private fun setUpTestDialog(imageBitmap: Bitmap?) {
+        SweetAlertDialog(this , SweetAlertDialog.WARNING_TYPE).apply {
+            titleText = "Upload"
+            contentText = "Tes"
+            confirmText = "Tes"
+            setCancelable(false)
+            setConfirmClickListener {
+                it.dismissWithAnimation()
+            }
+            setCancelButton(
+                "Kembali"
+            ) { sDialog -> sDialog.dismissWithAnimation() }
+            show()
+            getButton(SweetAlertDialog.BUTTON_CONFIRM).backgroundTintList =
+                this@CameraActivity.getColorStateList(R.color.black)
+
+            getButton(SweetAlertDialog.BUTTON_CANCEL)
+                .backgroundTintList = this@CameraActivity.getColorStateList(R.color.color_text)
+
+
+            confirmButtonTextColor = this@CameraActivity.getColor(R.color.black)
+            cancelButtonTextColor = this@CameraActivity.getColor(R.color.white)
+        }
+    }
+
+    @SuppressLint("NewApi")
+    private fun setUpDialog(image: Uri?) {
+        SweetAlertDialog(this , SweetAlertDialog.WARNING_TYPE).apply {
+            titleText = "Upload"
+            contentText = "Tes"
+            confirmText = "Tes"
+            setCancelable(false)
+            setConfirmClickListener {
+                uploadProcess(image)
+                it.dismissWithAnimation()
+            }
+            setCancelButton(
+                "Kembali"
+            ) { sDialog -> sDialog.dismissWithAnimation() }
+            show()
+            getButton(SweetAlertDialog.BUTTON_CONFIRM).backgroundTintList =
+                this@CameraActivity.getColorStateList(R.color.black)
+
+            getButton(SweetAlertDialog.BUTTON_CANCEL)
+                .backgroundTintList = this@CameraActivity.getColorStateList(R.color.color_text)
+
+
+            confirmButtonTextColor = this@CameraActivity.getColor(R.color.black)
+            cancelButtonTextColor = this@CameraActivity.getColor(R.color.white)
+        }
+    }
+
+    private fun uploadProcess(image: Uri?) {
+
     }
 
     private fun startCamera() {
@@ -126,7 +253,25 @@ class CameraActivity : AppCompatActivity() {
         ContextCompat.checkSelfPermission(baseContext, it) == PackageManager.PERMISSION_GRANTED
     }
 
+    private fun getOutputDir(): File {
+        val mediaDir = this.externalMediaDirs?.firstOrNull()?.let {
+            File(
+                it ,
+                resources.getString(R.string.app_name)
+            ).apply { mkdirs() }
+        }
+        return if (mediaDir != null && mediaDir.exists()) mediaDir else this.filesDir
+    }
+
+    private fun Int.getRandomString(): String {
+        val allowedChars = ('A' .. 'Z') + ('a' .. 'z') + ('0' .. '9')
+        return (1 .. this)
+            .map { allowedChars.random() }
+            .joinToString("")
+    }
+
     companion object {
+        const val TAG = "CAMERADETECT"
         const val CAMERA_X_RESULT = 200
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
         private const val REQUEST_CODE_PERMISSIONS = 10

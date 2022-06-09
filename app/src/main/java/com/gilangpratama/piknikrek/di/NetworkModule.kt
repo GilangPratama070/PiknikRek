@@ -17,7 +17,7 @@ object NetworkModule {
     @Singleton
     fun provideRetrofit(): ApiService =
         Retrofit.Builder()
-            .baseUrl("http://202.158.93.226:65293/")
+            .baseUrl("http://34.121.171.182/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
             .create(ApiService::class.java)

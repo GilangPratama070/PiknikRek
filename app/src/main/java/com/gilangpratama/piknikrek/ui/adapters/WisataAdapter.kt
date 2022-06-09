@@ -28,7 +28,7 @@ class WisataAdapter(private val onClicked: OnItemClicked): ListAdapter<WisataEnt
             binding.apply {
                 tvNamaWisata.text = wisataEntity.name
                 tvLokasi.text = wisataEntity.address
-                onClicked.onItemClicked(wisataEntity.id)
+                itemView.setOnClickListener { onClicked.onItemClicked(wisataEntity.id) }
 
                 val options = RequestOptions()
                     .transform(RoundedCorners(16))

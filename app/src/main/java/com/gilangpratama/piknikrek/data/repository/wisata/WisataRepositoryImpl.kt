@@ -32,20 +32,22 @@ class WisataRepositoryImpl @Inject constructor(private val remote: RemoteDataSou
             }
         }
 
-    override fun getDetailWisata(id: Int): LiveData<Result<DetailEntity?>> =
+    override fun getDetailWisata(id: Int): LiveData<Result<List<WisataEntity?>>> =
         liveData {
             emit(Result.Loading)
             try {
                 val result = remote.getDetailWisata(id)
-                val detail = DetailEntity(
-                    result.result?.images,
-                    result.result?.address,
-                    result.result?.name,
-                    result.result?.description,
-                    result.result?.id,
-                    result.result?.imageAvatar
-                )
-                emit(Result.Success(detail))
+                val list = result.data?.map {
+                    WisataEntity(
+                        it?.images,
+                        it?.address,
+                        it?.name,
+                        it?.description,
+                        it?.id,
+                        it?.imageAvatar
+                    )
+                }
+                emit(Result.Success(list))
             } catch (e: Exception) {
                 emit(Result.Error(e.message.toString()))
             }
