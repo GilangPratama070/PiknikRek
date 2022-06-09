@@ -32,6 +32,7 @@ class WisataRepositoryImpl @Inject constructor(private val remote: RemoteDataSou
             }
         }
 
+
     override fun getDetailWisata(id: Int): LiveData<Result<DetailEntity?>> =
         liveData {
             emit(Result.Loading)
