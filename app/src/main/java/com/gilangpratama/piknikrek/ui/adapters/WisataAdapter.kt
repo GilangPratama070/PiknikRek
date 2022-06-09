@@ -12,7 +12,7 @@ import com.gilangpratama.piknikrek.R
 import com.gilangpratama.piknikrek.data.local.WisataEntity
 import com.gilangpratama.piknikrek.databinding.ItemWisataBinding
 
-class WisataAdapter(): ListAdapter<WisataEntity, WisataAdapter.WisataViewHolder>(DIFF_CALLBACK) {
+class WisataAdapter(private val onClicked: OnItemClicked): ListAdapter<WisataEntity, WisataAdapter.WisataViewHolder>(DIFF_CALLBACK) {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WisataViewHolder {
         val binding = ItemWisataBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return WisataViewHolder(binding)
@@ -23,21 +23,27 @@ class WisataAdapter(): ListAdapter<WisataEntity, WisataAdapter.WisataViewHolder>
         holder.bind(wisata)
     }
 
-    class WisataViewHolder(private val binding: ItemWisataBinding): RecyclerView.ViewHolder(binding.root) {
+    inner class WisataViewHolder(private val binding: ItemWisataBinding): RecyclerView.ViewHolder(binding.root) {
         fun bind(wisataEntity: WisataEntity) {
             binding.apply {
                 tvNamaWisata.text = wisataEntity.name
-                tvLokasi.text = wisataEntity.location
+                tvLokasi.text = wisataEntity.address
+                onClicked.onItemClicked(wisataEntity.id)
 
                 val options = RequestOptions()
                     .transform(RoundedCorners(16))
                     .placeholder(R.color.purple_200)
+
                 Glide.with(itemView.context)
-                    .load(wisataEntity.avatar)
+                    .load(wisataEntity.imageAvatar)
                     .apply(options)
                     .into(ivWisata)
             }
         }
+    }
+
+    interface OnItemClicked {
+        fun onItemClicked(id: Int?)
     }
 
     companion object {

@@ -1,6 +1,6 @@
 package com.gilangpratama.piknikrek.data.local
 
-data class WisataEntity(
+data class DetailEntity(
     val images: List<String?>?,
     val address: String?,
     val name: String?,

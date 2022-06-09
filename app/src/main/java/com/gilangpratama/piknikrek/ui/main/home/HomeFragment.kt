@@ -5,22 +5,32 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gilangpratama.piknikrek.R
 import com.gilangpratama.piknikrek.data.local.WisataEntity
+import com.gilangpratama.piknikrek.data.remote.Result
 import com.gilangpratama.piknikrek.databinding.FragmentHomeBinding
 import com.gilangpratama.piknikrek.ui.adapters.WisataAdapter
+import com.gilangpratama.piknikrek.ui.main.MainViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import dagger.hilt.android.AndroidEntryPoint
 
-class HomeFragment : Fragment(), OnMapReadyCallback {
+@AndroidEntryPoint
+class HomeFragment : Fragment(), OnMapReadyCallback, WisataAdapter.OnItemClicked {
 
+    private val mainViewModel: MainViewModel by viewModels()
     private lateinit var mMap: GoogleMap
+    private lateinit var mAdapter: WisataAdapter
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding
 
@@ -43,32 +53,26 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
     }
 
     private fun setUpView() {
-        val listWisata = ArrayList<WisataEntity>()
-        listWisata.add(WisataEntity("2", "Candi Arjuna", "Wonosobo, Jawa Tengah", "https://ecs7.tokopedia.net/blog-tokopedia-com/uploads/2018/11/bromo-tengger-semeru.jpg"))
-        listWisata.add(WisataEntity("3", "Candi Arjuna", "Wonosobo, Jawa Tengah", "https://ecs7.tokopedia.net/blog-tokopedia-com/uploads/2018/11/bromo-tengger-semeru.jpg"))
-        listWisata.add(WisataEntity("2", "Candi Arjuna", "Wonosobo, Jawa Tengah", "https://ecs7.tokopedia.net/blog-tokopedia-com/uploads/2018/11/bromo-tengger-semeru.jpg"))
-        listWisata.add(WisataEntity("2", "Candi Arjuna", "Wonosobo, Jawa Tengah", "https://ecs7.tokopedia.net/blog-tokopedia-com/uploads/2018/11/bromo-tengger-semeru.jpg"))
-        listWisata.add(WisataEntity("2", "Candi Arjuna", "Wonosobo, Jawa Tengah", "https://ecs7.tokopedia.net/blog-tokopedia-com/uploads/2018/11/bromo-tengger-semeru.jpg"))
-        listWisata.add(WisataEntity("2", "Candi Arjuna", "Wonosobo, Jawa Tengah", "https://ecs7.tokopedia.net/blog-tokopedia-com/uploads/2018/11/bromo-tengger-semeru.jpg"))
-        listWisata.add(WisataEntity("2", "Candi Arjuna", "Wonosobo, Jawa Tengah", "https://ecs7.tokopedia.net/blog-tokopedia-com/uploads/2018/11/bromo-tengger-semeru.jpg"))
-        listWisata.add(WisataEntity("2", "Candi Arjuna", "Wonosobo, Jawa Tengah", "https://ecs7.tokopedia.net/blog-tokopedia-com/uploads/2018/11/bromo-tengger-semeru.jpg"))
-        listWisata.add(WisataEntity("2", "Candi Arjuna", "Wonosobo, Jawa Tengah", "https://ecs7.tokopedia.net/blog-tokopedia-com/uploads/2018/11/bromo-tengger-semeru.jpg"))
-        listWisata.add(WisataEntity("2", "Candi Arjuna", "Wonosobo, Jawa Tengah", "https://ecs7.tokopedia.net/blog-tokopedia-com/uploads/2018/11/bromo-tengger-semeru.jpg"))
-        listWisata.add(WisataEntity("2", "Candi Arjuna", "Wonosobo, Jawa Tengah", "https://ecs7.tokopedia.net/blog-tokopedia-com/uploads/2018/11/bromo-tengger-semeru.jpg"))
-        listWisata.add(WisataEntity("2", "Candi Arjuna", "Wonosobo, Jawa Tengah", "https://ecs7.tokopedia.net/blog-tokopedia-com/uploads/2018/11/bromo-tengger-semeru.jpg"))
-        listWisata.add(WisataEntity("2", "Candi Arjuna", "Wonosobo, Jawa Tengah", "https://ecs7.tokopedia.net/blog-tokopedia-com/uploads/2018/11/bromo-tengger-semeru.jpg"))
-        listWisata.add(WisataEntity("2", "Candi Arjuna", "Wonosobo, Jawa Tengah", "https://ecs7.tokopedia.net/blog-tokopedia-com/uploads/2018/11/bromo-tengger-semeru.jpg"))
-        listWisata.add(WisataEntity("2", "Candi Arjuna", "Wonosobo, Jawa Tengah", "https://ecs7.tokopedia.net/blog-tokopedia-com/uploads/2018/11/bromo-tengger-semeru.jpg"))
-        listWisata.add(WisataEntity("2", "Candi Arjuna", "Wonosobo, Jawa Tengah", "https://ecs7.tokopedia.net/blog-tokopedia-com/uploads/2018/11/bromo-tengger-semeru.jpg"))
-
         binding?.apply {
-            val mAdapter = WisataAdapter()
+            mAdapter = WisataAdapter(this@HomeFragment)
             rvHome.apply {
                 layoutManager = LinearLayoutManager(context)
                 setHasFixedSize(true)
                 adapter = mAdapter
             }
-            mAdapter.submitList(listWisata)
+            mainViewModel.listWisata.observe(viewLifecycleOwner, homeObserver)
+        }
+    }
+
+    private val homeObserver = Observer<Result<List<WisataEntity?>>> { result ->
+        when (result) {
+            is Result.Loading -> {}
+            is Result.Success -> {
+                mAdapter.submitList(result.data)
+            }
+            is Result.Error -> {
+                Toast.makeText(requireActivity(), result.message, Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -80,5 +84,11 @@ class HomeFragment : Fragment(), OnMapReadyCallback {
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(sydney, 10f))
         mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
         //mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+    }
+
+    override fun onItemClicked(id: Int?) {
+        val toDetail = HomeFragmentDirections.actionHomeFragmentToDetailActivity()
+        toDetail.id = id.toString()
+        findNavController().navigate(toDetail)
     }
 }

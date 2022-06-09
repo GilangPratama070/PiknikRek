@@ -9,10 +9,24 @@
         android:id="@+id/homeFragment"
         android:name="com.gilangpratama.piknikrek.ui.main.home.HomeFragment"
         android:label="fragment_home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_homeFragment_to_detailActivity"
+            app:destination="@id/detailActivity" />
+    </fragment>
     <fragment
         android:id="@+id/profileFragment"
         android:name="com.gilangpratama.piknikrek.ui.main.profile.ProfileFragment"
         android:label="fragment_profile"
         tools:layout="@layout/fragment_profile" />
+    <activity
+        android:id="@+id/detailActivity"
+        android:name="com.gilangpratama.piknikrek.ui.detail.DetailActivity"
+        android:label="DetailActivity" >
+        <argument
+            android:name="id"
+            app:argType="string"
+            android:defaultValue="1"
+            app:nullable="true" />
+    </activity>
 </navigation>
