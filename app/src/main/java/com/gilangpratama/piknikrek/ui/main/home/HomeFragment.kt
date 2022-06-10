@@ -1,5 +1,6 @@
 package com.gilangpratama.piknikrek.ui.main.home
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,13 +10,13 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.gilangpratama.piknikrek.R
-import com.gilangpratama.piknikrek.data.local.WisataEntity
+import com.gilangpratama.piknikrek.data.local.entity.WisataEntity
 import com.gilangpratama.piknikrek.data.remote.Result
 import com.gilangpratama.piknikrek.databinding.FragmentHomeBinding
 import com.gilangpratama.piknikrek.ui.adapters.WisataAdapter
+import com.gilangpratama.piknikrek.ui.detail.DetailActivity
 import com.gilangpratama.piknikrek.ui.main.MainViewModel
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -87,8 +88,8 @@ class HomeFragment : Fragment(), OnMapReadyCallback, WisataAdapter.OnItemClicked
     }
 
     override fun onItemClicked(id: Int?) {
-        val toDetail = HomeFragmentDirections.actionHomeFragmentToDetailActivity()
-        toDetail.id = id.toString()
-        findNavController().navigate(toDetail)
+        val intent = Intent(requireActivity(), DetailActivity::class.java)
+        intent.putExtra(DetailActivity.EXTRA_ID, id.toString())
+        startActivity(intent )
     }
 }

@@ -2,8 +2,7 @@ package com.gilangpratama.piknikrek.ui.detail
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.gilangpratama.piknikrek.data.local.DetailEntity
-import com.gilangpratama.piknikrek.data.local.WisataEntity
+import com.gilangpratama.piknikrek.data.local.entity.WisataEntity
 import com.gilangpratama.piknikrek.data.remote.Result
 import com.gilangpratama.piknikrek.data.repository.wisata.WisataRepository
 import dagger.hilt.android.lifecycle.HiltViewModel

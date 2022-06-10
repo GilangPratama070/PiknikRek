@@ -42,6 +42,8 @@ android {
 }
 
 dependencies {
+    //imageSlider
+    implementation 'com.github.denzcoskun:ImageSlideshow:0.1.0'
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'
@@ -81,7 +83,8 @@ dependencies {
     def lottieVersion = "3.7.0"
     implementation "com.airbnb.android:lottie:$lottieVersion"
 
-    implementation 'com.github.f0ris.sweetalert:library:1.6.2'
+    //datastore
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
 
     //TFlite
     implementation 'org.tensorflow:tensorflow-lite-task-vision:0.3.1'

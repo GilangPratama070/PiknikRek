@@ -8,14 +8,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.viewModels
 import com.gilangpratama.piknikrek.R
 import com.gilangpratama.piknikrek.databinding.FragmentItemBinding
 import com.gilangpratama.piknikrek.ui.main.MainActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class ItemFragment : Fragment() {
 
     private var _binding: FragmentItemBinding? = null
     private val binding get() = _binding
+    private val onBoardingViewModel: OnBoardingViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,9 +51,7 @@ class ItemFragment : Fragment() {
         val desc = "Mungkinkah menambah tinggi badan saat sudah dewasa? ada berberapa cara meninggikan badan orang dewasa"
         image?.triggerToView(title, desc)
         binding?.btnLewati?.setOnClickListener {
-            val intent = Intent(requireActivity(), MainActivity::class.java)
-            activity?.startActivity(intent)
-            activity?.finish()
+            onBoardingViewModel.setIsFirstTime(false)
         }
     }
 
@@ -93,9 +95,7 @@ class ItemFragment : Fragment() {
             ivOnboard.setImageDrawable(image)
             tvForSecThird.text = title
             btnMulai.setOnClickListener {
-                val intent = Intent(requireActivity(), MainActivity::class.java)
-                activity?.startActivity(intent)
-                activity?.finish()
+                onBoardingViewModel.setIsFirstTime(false)
             }
         }
     }

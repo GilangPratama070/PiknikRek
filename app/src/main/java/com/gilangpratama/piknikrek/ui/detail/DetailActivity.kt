@@ -2,13 +2,13 @@ package com.gilangpratama.piknikrek.ui.detail
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.navArgs
-import com.gilangpratama.piknikrek.R
-import com.gilangpratama.piknikrek.data.local.DetailEntity
-import com.gilangpratama.piknikrek.data.local.WisataEntity
+import com.denzcoskun.imageslider.constants.ScaleTypes
+import com.denzcoskun.imageslider.models.SlideModel
+import com.gilangpratama.piknikrek.data.local.entity.WisataEntity
 import com.gilangpratama.piknikrek.data.remote.Result
 import com.gilangpratama.piknikrek.databinding.ActivityDetailBinding
 import dagger.hilt.android.AndroidEntryPoint
@@ -17,7 +17,6 @@ import dagger.hilt.android.AndroidEntryPoint
 class DetailActivity : AppCompatActivity() {
 
     private val detailViewModel: DetailViewModel by viewModels()
-    private val detailArgs: DetailActivityArgs by navArgs()
     private lateinit var binding: ActivityDetailBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,10 +27,12 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setUpView() {
+        setSupportActionBar(binding.toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding.apply {
-            val id = detailArgs.id?.toInt()
+            val id = intent.extras?.getString(EXTRA_ID)
             id?.let {
-                detailViewModel.getDetailWisata(it).observe(this@DetailActivity, detailObserver)
+                detailViewModel.getDetailWisata(it.toInt()).observe(this@DetailActivity, detailObserver)
             }
         }
     }
@@ -40,7 +41,14 @@ class DetailActivity : AppCompatActivity() {
         when (result) {
             is Result.Loading -> {}
             is Result.Success -> {
-                populateDetail(result.data?.get(0))
+                val data = result.data?.get(0)
+                populateDetail(data)
+                val slideModel : ArrayList<SlideModel> = arrayListOf()
+                data?.images?.forEach {
+                    slideModel.add(SlideModel(it))
+                }
+                binding.imageSlider.setImageList(slideModel , ScaleTypes.CENTER_CROP)
+                binding.imageSlider.startSliding()
             }
             is Result.Error -> {
                 Toast.makeText(this, result.message, Toast.LENGTH_SHORT).show()
@@ -50,9 +58,18 @@ class DetailActivity : AppCompatActivity() {
 
     private fun populateDetail(data: WisataEntity?) {
         binding.apply {
-            tvName.text = data?.name
+            supportActionBar?.title = data?.name
             tvAlamat.text = data?.address
             tvDesc.text = data?.description
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        onBackPressed()
+        return super.onOptionsItemSelected(item)
+    }
+
+    companion object {
+        const val EXTRA_ID = "id"
     }
 }

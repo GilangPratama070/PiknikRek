@@ -9,23 +9,22 @@
     <androidx.camera.view.PreviewView
         android:id="@+id/viewFinder"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
+
     <Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/cardview_light_background"
-        >
+        android:paddingVertical="16dp"
+        android:background="@drawable/bg_toolbar">
+
         <ImageView
             android:id="@+id/btn_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
             android:layout_marginStart="16sp"
             android:layout_gravity="start"
             android:src="@drawable/ic_backarrow"
-            />
-
+            app:tint="@color/white" />
     </Toolbar>
 
     <com.airbnb.lottie.LottieAnimationView
@@ -41,32 +40,37 @@
     <com.google.android.material.bottomappbar.BottomAppBar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingVertical="8dp"
+        app:elevation="0dp"
+        android:backgroundTint="@android:color/transparent"
         android:background="@android:color/transparent"
         android:layout_gravity="bottom">
+
         <ImageView
             android:id="@+id/galery"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_marginStart="24dp"
             app:srcCompat="@drawable/ic_galery"
-            android:layout_gravity="start"/>
+            android:layout_gravity="start"
+            app:tint="@color/white" />
 
         <ImageView
             android:id="@+id/switchCamera"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
             android:layout_marginEnd="24dp"
             app:srcCompat="@drawable/ic_swich"
-            android:layout_gravity="end"/>
+            android:layout_gravity="end"
+            app:tint="@color/white" />
 
         <ImageView
             android:id="@+id/captureImage"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginBottom="24dp"
+            android:layout_width="64dp"
+            android:layout_height="64dp"
             app:srcCompat="@drawable/ic_capture"
-            android:layout_gravity="center|center_vertical|center_horizontal"/>
+            android:layout_gravity="center|center_vertical|center_horizontal"
+            app:tint="@color/white" />
 
     </com.google.android.material.bottomappbar.BottomAppBar>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

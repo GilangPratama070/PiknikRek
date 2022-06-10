@@ -8,4 +8,6 @@ class RemoteDataSource @Inject constructor(private val apiService: ApiService) {
     suspend fun getListWisata() = apiService.getListWisata()
 
     suspend fun getDetailWisata(id: Int) = apiService.getDetailWisata(id)
+
+    suspend fun searchWisata(query: String) = apiService.searchWisata(query)
 }

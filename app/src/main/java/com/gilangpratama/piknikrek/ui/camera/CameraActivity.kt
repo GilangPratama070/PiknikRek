@@ -1,15 +1,12 @@
 package com.gilangpratama.piknikrek.ui.camera
 
 import android.Manifest
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
 import android.widget.Toast
@@ -22,9 +19,10 @@ import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
-import cn.pedant.SweetAlert.SweetAlertDialog
 import com.gilangpratama.piknikrek.R
 import com.gilangpratama.piknikrek.databinding.ActivityCameraBinding
+import com.gilangpratama.piknikrek.ui.result.ResultActivity
+import com.gilangpratama.piknikrek.ui.search.SearchFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -100,12 +98,10 @@ class CameraActivity : AppCompatActivity() {
                 }
 
                 override fun onImageSaved(output: ImageCapture.OutputFileResults) {
-                    setUpDialog(Uri.fromFile(photoFile))
                     val options = BitmapFactory.Options()
                     val image = BitmapFactory.decodeFile(photoFile.absolutePath, options)
                     val imageBitmap = Bitmap.createBitmap(image)
                     lifecycleScope.launch(Dispatchers.Default) { runObjectDetection(imageBitmap) }
-                    //setUpTestDialog(imageBitmap)
                 }
             }
         )
@@ -121,70 +117,26 @@ class CameraActivity : AppCompatActivity() {
         val result = detector.detect(image)
         val resultToDisplay = result.map {
             val category = it.categories.first()
-            val text = category.label
-            DetectionResult(text)
+            category.label
         }
 
         runOnUiThread {
-            Toast.makeText(this, "$resultToDisplay", Toast.LENGTH_SHORT).show()
-        }
-    }
+            if (resultToDisplay.isNotEmpty()) {
+                Toast.makeText(this, resultToDisplay[0], Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, ResultActivity::class.java).apply {
+                    putExtra(ResultActivity.QUERY, resultToDisplay[0].toString())
+                }
+                startActivity(intent)
+                finish()
 
-    @SuppressLint("NewApi")
-    private fun setUpTestDialog(imageBitmap: Bitmap?) {
-        SweetAlertDialog(this , SweetAlertDialog.WARNING_TYPE).apply {
-            titleText = "Upload"
-            contentText = "Tes"
-            confirmText = "Tes"
-            setCancelable(false)
-            setConfirmClickListener {
-                it.dismissWithAnimation()
+            } else {
+                Toast.makeText(
+                    this,
+                    "Maaf, gambar tidak dikenali. Silahkan coba lagi",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
-            setCancelButton(
-                "Kembali"
-            ) { sDialog -> sDialog.dismissWithAnimation() }
-            show()
-            getButton(SweetAlertDialog.BUTTON_CONFIRM).backgroundTintList =
-                this@CameraActivity.getColorStateList(R.color.black)
-
-            getButton(SweetAlertDialog.BUTTON_CANCEL)
-                .backgroundTintList = this@CameraActivity.getColorStateList(R.color.color_text)
-
-
-            confirmButtonTextColor = this@CameraActivity.getColor(R.color.black)
-            cancelButtonTextColor = this@CameraActivity.getColor(R.color.white)
         }
-    }
-
-    @SuppressLint("NewApi")
-    private fun setUpDialog(image: Uri?) {
-        SweetAlertDialog(this , SweetAlertDialog.WARNING_TYPE).apply {
-            titleText = "Upload"
-            contentText = "Tes"
-            confirmText = "Tes"
-            setCancelable(false)
-            setConfirmClickListener {
-                uploadProcess(image)
-                it.dismissWithAnimation()
-            }
-            setCancelButton(
-                "Kembali"
-            ) { sDialog -> sDialog.dismissWithAnimation() }
-            show()
-            getButton(SweetAlertDialog.BUTTON_CONFIRM).backgroundTintList =
-                this@CameraActivity.getColorStateList(R.color.black)
-
-            getButton(SweetAlertDialog.BUTTON_CANCEL)
-                .backgroundTintList = this@CameraActivity.getColorStateList(R.color.color_text)
-
-
-            confirmButtonTextColor = this@CameraActivity.getColor(R.color.black)
-            cancelButtonTextColor = this@CameraActivity.getColor(R.color.white)
-        }
-    }
-
-    private fun uploadProcess(image: Uri?) {
-
     }
 
     private fun startCamera() {

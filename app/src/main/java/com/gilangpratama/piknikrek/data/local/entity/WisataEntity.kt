@@ -1,4 +1,4 @@
-package com.gilangpratama.piknikrek.data.local
+package com.gilangpratama.piknikrek.data.local.entity
 
 data class WisataEntity(
     val images: List<String?>?,

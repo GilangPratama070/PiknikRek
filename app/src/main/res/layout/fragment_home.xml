@@ -24,12 +24,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:elevation="2dp"
+                app:logo="@drawable/ic_logo_toolbar"
+                android:paddingStart="16dp"
                 android:background="@color/white"
-                app:titleTextColor="@color/black"
+                app:titleTextColor="@color/color_logo"
                 app:title="@string/app_name"
                 app:popupTheme="@style/Theme.PiknikRek.PopUpOverlay"
                 android:layout_gravity="top"
-                app:layout_collapseMode="pin"/>
+                app:layout_collapseMode="pin"
+                tools:ignore="RtlSymmetry" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
