@@ -22,7 +22,6 @@ import androidx.lifecycle.lifecycleScope
 import com.gilangpratama.piknikrek.R
 import com.gilangpratama.piknikrek.databinding.ActivityCameraBinding
 import com.gilangpratama.piknikrek.ui.result.ResultActivity
-import com.gilangpratama.piknikrek.ui.search.SearchFragment
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -58,7 +57,7 @@ class CameraActivity : AppCompatActivity() {
     private fun setUpView() {
         binding.apply {
             switchCamera.setOnClickListener {
-                cameraSelector = if (cameraSelector.equals(CameraSelector.DEFAULT_BACK_CAMERA)) CameraSelector.DEFAULT_FRONT_CAMERA
+                cameraSelector = if (cameraSelector == CameraSelector.DEFAULT_BACK_CAMERA) CameraSelector.DEFAULT_FRONT_CAMERA
                 else CameraSelector.DEFAULT_BACK_CAMERA
 
                 startCamera()
@@ -223,8 +222,6 @@ class CameraActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val TAG = "CAMERADETECT"
-        const val CAMERA_X_RESULT = 200
         private val REQUIRED_PERMISSIONS = arrayOf(Manifest.permission.CAMERA)
         private const val REQUEST_CODE_PERMISSIONS = 10
     }

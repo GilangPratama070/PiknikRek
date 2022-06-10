@@ -1,17 +1,15 @@
 package com.gilangpratama.piknikrek.ui.onboard
 
-import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.gilangpratama.piknikrek.R
 import com.gilangpratama.piknikrek.databinding.FragmentItemBinding
-import com.gilangpratama.piknikrek.ui.main.MainActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

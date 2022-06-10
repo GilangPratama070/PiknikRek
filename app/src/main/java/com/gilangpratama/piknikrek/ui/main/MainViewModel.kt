@@ -10,7 +10,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val wisataRepository: WisataRepository
+    wisataRepository: WisataRepository
 ): ViewModel() {
 
     val listWisata: LiveData<Result<List<WisataEntity?>>> =
