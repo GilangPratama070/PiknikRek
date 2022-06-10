@@ -5,6 +5,8 @@ import com.gilangpratama.piknikrek.data.remote.response.wisata.WisataResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import okhttp3.MultipartBody
+import retrofit2.http.*
 
 interface ApiService {
 
@@ -17,5 +19,10 @@ interface ApiService {
     @GET("detail-wisata/{id}")
     suspend fun getDetailWisata(
         @Path("id") id: Int
+    ): WisataResponse
+
+    @GET("search")
+    suspend fun searchWisata(
+        @Query("nama_wisata") query: String
     ): WisataResponse
 }
