@@ -28,7 +28,7 @@ The documentation of Piknik-Rek' application in Bangkit Capstone Project 2022
 | :-------------------------: | :--------: | :----------------: | :----------------------------------------: | :-----------------------------------------------------------------------------------------------------------------: |
 |      Saffanah Karimah       | M2004F019 |  Machine Learning  | Machine Learning Engineer |           [LinkedIn](http://linkedin.com/in/saffanahkarimah)          |
 |     Patrick Naga Kencana   | M2004G0238  |  Machine Learning  |          Machine Learning Engineer         |   [LinkedIn]( https://www.linkedin.com/in/patrick-naga-kencana/)  |
-|     Gilang Pratama (A2466F3084     | A7006H0543 | Mobile Development |          Android Mobile Developer          |             [LinkedIn](https://www.linkedin.com/in/gilang-pratama) or [Github](https://github.com/GilangPratama070)             |
+|     Gilang Pratama     | A2466F3084  | Mobile Development |          Android Mobile Developer          |             [LinkedIn](https://www.linkedin.com/in/gilang-pratama) or [Github](https://github.com/GilangPratama070)             |
 |     Muhamad Mufid Bachri     | A7466F3085 | Mobile Development |          Android Mobile Developer          |    [LinkedIn](https://www.linkedin.com/in/muhamad-mufid-bachri-455197219) or [Github](https://github.com/mufidvaldes)    |
 |     Fajar Ahmad Raharjo     | C2466F3086  |   Cloud Computing  |               Project Manager,DevOps Engineer              |            [LinkedIn](https://www.linkedin.com/in/fajar-ahmad-raharjo-3565b1235/)          |
 |  Yoga Setyono  | C7223W2033 |   Cloud Computing  |          DevOps Engineer        | [LinkedIn](https://www.linkedin.com/in/yoga-setyono-4869b7201)  |
