@@ -22,6 +22,7 @@ The documentation of Piknik-Rek' application in Bangkit Capstone Project 2022
 
 
 
+
 # The Team
 
 |            Member           | Student ID |        Path        |                    Role                    |                                                       Contacts                                                      |
