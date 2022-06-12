@@ -47,4 +47,4 @@ The documentation of Piknik-Rek' application in Bangkit Capstone Project 2022
 # License
 Distributed under the MIT License. See `LICENSE` for more information.
 
-<p align="right"> Keep the Bangkit Spirit and Stay Safe! <br> C22-PS007 Teams </p>
+<p align="right"> Keep the Bangkit Spirit and Stay Safe! <br> C22-PS347  Teams </p>
